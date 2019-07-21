@@ -17,12 +17,12 @@ PASSWORD = 'runcircle123' # Put your password here.
 HOST = 'localhost' # Try with Localhost, if it doesn't work, open the database in
 # Workbench. Click "Database" and then "Manage Connection" and you'll see a hostname.
 # That is what goes in the host variable.
-DATABSE = 'PythonTest' # Obviously change this to whatever you want, as long as it matches.
+DATABASE = 'PythonTest' # Obviously change this to whatever you want, as long as it matches.
 
 # It all goes in here!
 # The connection variable here will be the connection to the database.
 connection = mysql.connector.connect(user = USER, 
-    password = PASSWORD, host = HOST, database = DATABSE)
+    password = PASSWORD, host = HOST, database = DATABASE)
 
 print("First connection: ", connection)
 connection.close()
@@ -33,7 +33,7 @@ DBconfig = {
   'user': USER,
   'password': PASSWORD,
   'host': HOST,
-  'database': DATABSE,
+  'database': DATABASE,
 }
 
 # Also a good idea to use try-except clauses since things can go
@@ -86,10 +86,10 @@ cursor = cnction.cursor()
 # 3. Try to execute commands using the cursor object.
 try:
     # Here, we're trying to "use" the Database.
-    cursor.execute("USE {}".format(DATABSE))
-    print("Successfully using {}".format(DATABSE))
+    cursor.execute("USE {}".format(DATABASE))
+    print("Successfully using {}".format(DATABASE))
 except mysql.connector.Error as err:
-    print("Something went wrong trying to use {}".format(DATABSE))
+    print("Something went wrong trying to use {}".format(DATABASE))
 
 # Now loop through the dictionairy (even though it only has one entry)
 # and assign a string as the big script we wrote. Then execute it.
@@ -107,4 +107,5 @@ for entry in TABLES:
 cursor.close()       
 cnction.close()
 
-
+cxn = mysql.connector.connect(user = USER, password = PASSWORD, host = HOST, database = DATABASE)
+cursor = cxn.cursor()

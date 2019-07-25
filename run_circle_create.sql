@@ -11,12 +11,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema run_circle
 -- -----------------------------------------------------
+drop schema if exists run_circle;
 CREATE SCHEMA IF NOT EXISTS `run_circle` DEFAULT CHARACTER SET utf8 ;
 USE `run_circle` ;
 
 -- -----------------------------------------------------
 -- Table `run_circle`.`user`
 -- -----------------------------------------------------
+drop table if exists user;
 CREATE TABLE IF NOT EXISTS `run_circle`.`user` (
   `user_id` INT NOT NULL,
   `dob` DATE NOT NULL,
@@ -29,10 +31,62 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`user` (
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE)
 ENGINE = InnoDB;
 
+insert into user (user_id, dob, gender, first_name, last_name, phone, hidden) values
+(1, '19950410', "M", "fergus", "scott", 8074671453, 0),
+(2, '19960214', "M", "kenji", "fujita", 5672895142, 0),
+(3, '19940319', "M", "magnus", "frennberg", 5248194675, 0),
+(4, '19920201', "F", "kelly", "jones", 7869027564, 1),
+(5, '19901102', "F", "anne", "michaels", 1236540978, 1),
+(6, '19910808', "F", "kate", "allen", 7569184798, 1),
+(7, '19840411', "F", "rashida", "davidoff", 8462678917, 0),
+(8, '19860226', "M", "michael", "scott", 6578950723, 0),
+(9, '19960322', "F", "oprah", "linkert", 3427580139, 1), 
+(10, '19990909', "M", "alex", "daggart", 8291875610, 0),
+(11, '19750517', "F", "ayn", "rand", 1973678063, 1), 
+(12, '19820123', "M", "donald", "mccollom", 9058969999, 0), 
+(13, '19790217', "F", "hillary", "sanders", 6451890265, 0),
+(14, '19630915', "M", "bernie", "mulaney", 1873908576, 1), 
+(15, '19740619', "F", "judy", "bates", 1638953018, 0),
+(16, '19820828', "M", "randolph", "upsalla", 7486274601,1), 
+(17, '19911219', "F", "catherine", "providence", 8174561029, 0), 
+(18, '19871101', "M", "akash", "bangalore", 9018734992, 1), 
+(19, '19821009', "F", "leticia", "duke", 8053007538, 0), 
+(20, '19770707', "M", "davis", "davidson", 3547839138, 0), 
+(21, '19990216', "F", "jane", "eyre", 5367481029, 1), 
+(22, '19870330', "M", "fredrick", "naghstein", 8365883650, 0), 
+(23, '19790407', "F", "portia", "woodman", 5128775178, 0), 
+(24, '19920909', "M", "sam", "mccaw", 6558779889, 1), 
+(25, '19620615', "F", "ashleigh", "timpson", 5348208675, 0), 
+(26, '19911207', "M", "ardie", "smith", 1322877690, 1), 
+(27, '19890102', "F", "natalie", "kunis", 9875462785, 0), 
+(28, '19931126', "M", "ben", "barrett", 8537514235, 1), 
+(29, '19821009', "F", "irene", "taylors", 2579871324, 0), 
+(30, '19900423', "M", "keanu", "thompson", 8572340192, 1), 
+(31, '19850128', "F", "robyn", "wilson", 8562451092, 0), 
+(32, '19870715', "M", "brodie", "alchemers", 5346172897, 1), 
+(33, '19920427', "F", "madison", "biles", 890981376, 0), 
+(34, '19910101', "F", "clementine", "georgison", 7351907815, 1), 
+(35, '19781203', "M", "steve", "clooney", 6548910917, 0), 
+(37, '19861114', "F", "margaret", "thatchers", 6145389201, 1), 
+(39, '19931015', "M", "bradley", "dunlop", 3156728098, 0), 
+(40, '19780330', "F", "christie", "somersby", 8695364817, 0), 
+(41, '19900814', "M", "charlie", "grofton", 7356718920, 1), 
+(42, '19840712', "F", "petunia", "rosewood", 3897562009, 0), 
+(43, '19750814', "M", "quintin", "chang", 5467289876, 0), 
+(44, '19620108', "F", "fiona", "wollongong", "1998760918", 1), 
+(45, '19901030', "M", "carlos", "ramirez", 8679280929, 0), 
+(46, '19930419', "F", "zoe", "atkinson", 8465267819, 1), 
+(47, '19870629', "M", "frederick", "ardmore", 4526567781, 0), 
+(48, '19830912', "F", "harriette", "ponyford", 9889765248, 0), 
+(49, '19810705', "M", "boksfull", "ovkandee", 3451890914, 1), 
+(50, '19920818', "M", "socrates", "hawking", 5367824578, 0);
+
+
 
 -- -----------------------------------------------------
 -- Table `run_circle`.`location`
 -- -----------------------------------------------------
+drop table if exists location;
 CREATE TABLE IF NOT EXISTS `run_circle`.`location` (
   `location_id` INT NOT NULL,
   `city_name` VARCHAR(50) NOT NULL,
@@ -43,6 +97,12 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`location` (
   UNIQUE INDEX `location_id_UNIQUE` (`location_id` ASC) VISIBLE)
 ENGINE = InnoDB;
 
+insert into location (location_id, city_name, country_name, latitude, longitude) values
+(1, "London", "Great Britain", "51.5074 N", "0.1278 W"),
+(2, "Boston", "United States", "42.3601 N", "71.0589 W"), 
+(3, "Chicago", "United States", "41.8781 N", "87.6298 W"), 
+(4, "Stockholm", "Sweden", "59.3293 N", "18.0686 E"), 
+(5, "Wellington", "New Zealand", "41.2865 N","174.7762 E"); 
 
 -- -----------------------------------------------------
 -- Table `run_circle`.`profile`

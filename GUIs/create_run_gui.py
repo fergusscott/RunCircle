@@ -63,7 +63,8 @@ class simpleapp_tk(tkinter.Tk):
 
 if __name__ == "__main__":
     cnx = mysql.connector.connect(
-        user='project_user',
+        user='root',
+        password = "runcircle123",
         database='run_circle'
         )
     print("connected")
@@ -74,7 +75,7 @@ if __name__ == "__main__":
     userCur.execute("SELECT user_id, first_name from user")
     rows = userCur.fetchall()
     for r in rows:
-        print(f" ID = {r[0]} NAME = {r[3]}")
+        print(f" ID = {r[0]} NAME = {r[1]}")
     
     app = simpleapp_tk(None)
     app.title('my application')

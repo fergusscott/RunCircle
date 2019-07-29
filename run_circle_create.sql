@@ -1,5 +1,6 @@
-CREATE DATABASE IF NOT EXISTS PythonTest;
-USE PythonTest;
+DROP DATABASE IF EXISTS run_circle;
+CREATE DATABASE IF NOT EXISTS run_circle;
+USE run_circle;
 
 -- MySQL Workbench Forward Engineering
 
@@ -360,7 +361,6 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`circle_memberships` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `run_circle`.`friend_connections`
 -- -----------------------------------------------------
@@ -392,7 +392,6 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`trophies` (
   PRIMARY KEY (`trophies_id`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `run_circle`.`circle_has_trophies`
 -- -----------------------------------------------------
@@ -414,28 +413,15 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`circle_has_trophies` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `run_circle`.`run_has_user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `run_circle`.`run_has_user` (
+CREATE TABLE IF NOT EXISTS `run_circle`.`run_has_profile` (
   `run_run_id` INT NOT NULL,
-  `user_user_id` INT NOT NULL,
-  PRIMARY KEY (`run_run_id`, `user_user_id`),
-  INDEX `fk_run_has_user_user1_idx` (`user_user_id` ASC),
-  INDEX `fk_run_has_user_run1_idx` (`run_run_id` ASC),
-  CONSTRAINT `fk_run_has_user_run1`
-    FOREIGN KEY (`run_run_id`)
-    REFERENCES `run_circle`.`run` (`run_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_run_has_user_user1`
-    FOREIGN KEY (`user_user_id`)
-    REFERENCES `run_circle`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `profile_profile_id` INT NOT NULL,
+  CONSTRAINT FOREIGN KEY (run_run_id) REFERENCES run(run_id),
+  CONSTRAINT FOREIGN KEY (profile_profile_id) REFERENCES profile(profile_id))
 ENGINE = InnoDB;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

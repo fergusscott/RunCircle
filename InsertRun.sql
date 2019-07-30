@@ -41,16 +41,6 @@ END //
 
 DELIMITER ;
 
--- Supply user_id, duration, 
--- distance in miles, circle_id, 
--- elevation, location_id, smart_integration, 
--- scheduled_date_param
-
-# Test
-CALL InsertRun(1, 1, 10.45, 2.54, NULL, -2, 1, NULL, CURRENT_TIMESTAMP());
-CALL InsertRun(20, 20, 10.46, 2.56, NULL, 2, 2, NULL, CURRENT_TIMESTAMP());
-
-
 SELECT * FROM run;
 SELECT * FROM run_has_profile;
 

@@ -1,42 +1,22 @@
-'''
-    Function to use for the DB project.
-    ---- Notes ----
-    We probably will get dictionairies / json files from our input,
-    and thus these functions will work accordingly.
-'''
+USER = 'root' # You probably don't have to change this.
+PASSWORD = 'runcircle123' # Put your password here.
+HOST = '127.0.0.1' # Try with Localhost, if it doesn't work, open the database in
+# Workbench. Click "Database" and then "Manage Connection" and you'll see a hostname.
+# That is what goes in the host variable.
+DATABASE = 'run_circle' # Obviously change this to whatever you want, as long as it matches.
 
-def validate_run(dict):
-    '''
-    '''
-    dict_cpy = dict
-
-    all_columns = ["duration", 
-    "pace_per_mile", "elevation", 
-    "distance", "circle_id", 
-    "location_id", "smart_integration",
-    "actual_date", "scheduled_date"]
-
-    for word in all_columns:
-        if word not in dict_cpy:
-            dict_cpy[word] = None
-
-
+import mysql.connector
+from mysql.connector import errorcode
+from InsertRun import InsertRun
 
 def main():
 
-    dict1 = {"duration": 1023.12, "pace_per_mile": 5, 
-            "elevation": 7, "distance": 18, 
-            "circle_id": 1, "location_id": 12}
-    
-    dict2 = {"duration": "kittycat", "pace_per_mile": 5, 
-            "elevation": 7, "distance": 18, 
-            "circle_id": 1, "location_id": 12,
-            "actual_date": "10-12-23", "scheduled_date": "10-12-23"}
-    
-    print("Dictionary 1")
-    validate_run(dict1)
-    print("Dictionary 2")
-    validate_run(dict2)
-    
+    connection = mysql.connector.connect(user = USER, 
+    password = PASSWORD, host = HOST, database = DATABASE)
+
+    InsertRun(connection, [3, 3, 27.05, 3.05, None, 3, 1, None, None])
+
+    connection.close()
+
 main()
 

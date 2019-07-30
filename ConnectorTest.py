@@ -8,6 +8,7 @@
 # Follw the instructions to install.
 import mysql.connector
 from mysql.connector import errorcode
+import InsertRun
 
 # Globals - put you info here and see if it works. You'll be connecting to
 # the database running on your laptop.

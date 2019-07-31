@@ -11,7 +11,7 @@ def main():
     connection = mysql.connector.connect(user = USER, 
     password = PASSWORD, host = HOST, database = DATABASE)
 
-    InsertRun(connection, [3, 3, 27.05, 3.05, 4.23, None, 3, 1, None, None])
+    InsertRun(connection, [3, 3, '00:27:05', 3.05, '00:04:23', None, 3, 1, None, None])
     
     connection.close()
 

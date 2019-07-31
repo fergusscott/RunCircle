@@ -2,6 +2,9 @@
     Insert Run function.
 '''
 
+import mysql.connector
+from mysql.connector import Error
+
 def InsertRun(db_connector, list_of_arg):
     '''
         Order of arguments should be:
@@ -18,22 +21,16 @@ def InsertRun(db_connector, list_of_arg):
 
     cursor = db_connector.cursor()
 
-    # This should come from the session
-    user_id_param = list_of_arg[0]
-    profile_id_param = list_of_arg[1]
+    # Cause I know the args are correct, for now
+    arg_tup = tuple(list_of_arg)
 
-    # Running parameters
-    duration_param = list_of_arg[2]
-    distance_in_miles_param = list_of_arg[3]
-    circle_id_param = list_of_arg[4]
-    elevation_param = list_of_arg[5]
-    location_id_param = list_of_arg[6]
-    smart_integration_param = list_of_arg[7]
-    scheduled_date_param = list_of_arg[8]
-
-    cursor.execute("CALL InsertRow({}, {}, {}, {}, {}, {}, {}, {}, {})".format(
-         user_id_param, profile_id_param, duration_param, distance_in_miles_param, circle_id_param,
-         elevation_param, location_id_param, smart_integration_param, scheduled_date_param))
+    try:
+        cursor.callproc("InsertRun", arg_tup)
+        db_connector.commit()
+        cursor.close()
+    except mysql.connector.Error as err:
+        print("Something went crazy: {}".format(err))
 
     cursor.close()
+    
         

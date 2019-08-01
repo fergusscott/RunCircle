@@ -1,6 +1,8 @@
 # The weird file made by the Workbench
 .bmk
 .mwb.bmk
+.bak
+.mwb.bak
 
 # Settings for VSCode
 .vscode/

@@ -23,11 +23,25 @@ BEGIN
     -- 3. Updates the profile with their new statistics.
     -- The whole thing is a transaction - so it rollsbacks in case of an error.
 
-    DECLARE last_run_id INT;
+ 
+	DECLARE last_run_id INT;
     
     # For updating the profile
     DECLARE amt_runs_prev INT;
     DECLARE new_avg_dis FLOAT;
+    
+    # For new avg duration
+    DECLARE avg_dur_sec INT;
+    DECLARE added_dur_sec INT;
+    DECLARE new_avg_dur_sec INT;
+    DECLARE new_avg_dur TIME;
+    
+    # For new avg pace per mile.
+    DECLARE cur_ppm_sec INT;
+    DECLARE old_sec_all_miles INT;
+    DECLARE total_sec_all_miles INT;
+    DECLARE new_ppm_sec INT;
+    DECLARE new_avg_ppm TIME;
     
     # Error handling and rollback.
     DECLARE _error BOOL DEFAULT 0;
@@ -35,10 +49,10 @@ BEGIN
     
     # We make it a transaction. Right now it's a blanket error handler 
     # may be able to make it more precise later.
-	#START TRANSACTION;
+	START TRANSACTION;
 		INSERT INTO run (duration, pace_per_mile, elevation, distance, circle_id, 
 			location_id, smart_integration, actual_date, scheduled_date) 
-			VALUES (duration_param, pace_per_mile, elevation_param, 
+			VALUES (duration_param, pace_per_mile_param, elevation_param, 
 				distance_in_miles_param, circle_id_param, location_id_param, 
 				smart_integration_param, current_timestamp(), scheduled_date_param);
 				
@@ -62,26 +76,38 @@ BEGIN
 			# Oh, you've run before? We'll handle that.
             ELSE
 				# Get the average. Calculate total distance ran. Add the new run, get the new average. Repeat for other statz.
-				SELECT ((avg_distance_miles * amt_runs_prev) + distance_in_miles_param) / (amt_runs_prev + 1) INTO new_avg_dis 
+				# Does not work...
+                SELECT ((avg_distance_miles * amt_runs_prev) + distance_in_miles_param) / (amt_runs_prev + 1) INTO new_avg_dis 
 					FROM profile WHERE profile_id = profile_id_param;
                 
-                UPDATE profile SET avg_distance_miles = distance_in_miles_param WHERE profile_id = profile_id_param;
+                # Works!
+                SELECT time_to_sec(avg_duration) INTO avg_dur_sec FROM profile WHERE profile_id = profile_id_param;
+                SELECT time_to_sec(duration_param) INTO added_dur_sec;
+                SELECT ((avg_dur_sec * amt_runs_prev) + added_dur_sec) / (amt_runs_prev + 1) INTO new_avg_dur_sec;
+                SELECT sec_to_time(new_avg_dur_sec) INTO new_avg_dur;
+                
+                # Works!
+                SELECT time_to_sec(pace_per_mile) INTO cur_ppm_sec FROM profile WHERE profile_id = profile_id_param;
+                SELECT cur_ppm_sec * (avg_distance_miles * amt_runs_prev) INTO old_sec_all_miles FROM profile 
+						WHERE profile_id = profile_id_param;
+                SELECT old_sec_all_miles + (time_to_sec(pace_per_mile_param) * distance_in_miles_param) INTO total_sec_all_miles
+						FROM profile WHERE profile_id = profile_id_param;
+                SELECT total_sec_all_miles / ((avg_distance_miles * amt_runs_prev) + distance_in_miles_param) INTO
+					new_ppm_sec FROM profile WHERE profile_id = profile_id_param;
+                SELECT sec_to_time(new_ppm_sec) INTO new_avg_ppm;
+                
+                UPDATE profile SET avg_distance_miles = new_avg_dis WHERE profile_id = profile_id_param;
 				UPDATE profile SET pace_per_mile = new_avg_ppm WHERE profile_id = profile_id_param;
 				UPDATE profile SET avg_duration = new_avg_dur WHERE profile_id = profile_id_param;
-				UPDATE profile SET runs = amt_runs_prev + 1 WHERE profile_id = profile_id_param;
+				UPDATE profile SET runs = (amt_runs_prev + 1) WHERE profile_id = profile_id_param;
+                
 			END IF;
             
-			#IF(_error = 1) THEN
-			#	ROLLBACK;
-			#ELSE
-			#	COMMIT;
-			#END IF;
+			IF(_error = 1) THEN
+				ROLLBACK;
+			ELSE
+				COMMIT;
+			END IF;
 END //
 
 DELIMITER ;
-
-CALL InsertRun(3, 3, '00:27:05', 3.05, '00:04:23', NULL, 3, 1, NULL, NULL);
-
-select * from profile;
-select * from run;
-select * from run_has_profile;

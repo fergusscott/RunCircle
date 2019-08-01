@@ -187,7 +187,6 @@ insert into profile (preferred_location, handle, hidden, user_id) values
         (5, "horseyharriett", 0, 48), 
         (5, "bustinboksa", 1, 49), 
         (5, "fastlikehawks", 0,50);
-        select * from profile;
 
 -- -----------------------------------------------------
 -- Table `run_circle`.`account`

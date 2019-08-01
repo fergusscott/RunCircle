@@ -7,3 +7,8 @@
 
 # Pycache?
 __pycache__/
+
+# No pics
+.jpg
+.png
+.jpeg

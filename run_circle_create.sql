@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS run_circle;
-USE run_circle;
+CREATE DATABASE IF NOT EXISTS PythonTest;
+USE PythonTest;
 
 -- MySQL Workbench Forward Engineering
 

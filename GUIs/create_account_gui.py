@@ -42,21 +42,25 @@ class simpleapp_tk(tkinter.Tk):
         self.entry = tkinter.Entry(self,textvariable=self.gender)
         self.entry.grid(column=0,row=13,columnspan=2,stick='EW')
 
-        self.location = tkinter.StringVar()
-        self.entry = tkinter.Entry(self,textvariable=self.location)
+        self.city = tkinter.StringVar()
+        self.entry = tkinter.Entry(self,textvariable=self.city)
         self.entry.grid(column=0,row=15,columnspan=2,stick='EW')
+
+        self.country = tkinter.StringVar()
+        self.entry = tkinter.Entry(self,textvariable=self.country)
+        self.entry.grid(column=0,row=17,columnspan=2,stick='EW')
 
         self.handle = tkinter.StringVar()
         self.entry = tkinter.Entry(self,textvariable=self.handle)
-        self.entry.grid(column=0,row=17,columnspan=2,stick='EW')
+        self.entry.grid(column=0,row=19,columnspan=2,stick='EW')
 
         self.hidden_info = tkinter.StringVar()
         self.entry = tkinter.Entry(self,textvariable=self.hidden_info)
-        self.entry.grid(column=0,row=19,columnspan=2,stick='EW')
+        self.entry.grid(column=0,row=21,columnspan=2,stick='EW')
 
         self.hidden_profile = tkinter.StringVar()
         self.entry = tkinter.Entry(self,textvariable=self.hidden_profile)
-        self.entry.grid(column=0,row=21,columnspan=2,stick='EW')
+        self.entry.grid(column=0,row=23,columnspan=2,stick='EW')
 
 
 
@@ -103,28 +107,34 @@ class simpleapp_tk(tkinter.Tk):
         label.grid(column=0,row=12,columnspan=2,sticky='EW')
         self.labelGender.set(u"Gender")
 
-        self.labelLocation = tkinter.StringVar()
-        label = tkinter.Label(self,textvariable=self.labelLocation,
+        self.labelCity = tkinter.StringVar()
+        label = tkinter.Label(self,textvariable=self.labelCity,
                               anchor = "w",fg="white",bg="blue")
         label.grid(column=0,row=14,columnspan=2,sticky='EW')
-        self.labelLocation.set(u"Location")
+        self.labelCity.set(u"City")
+
+        self.labelCountry = tkinter.StringVar()
+        label = tkinter.Label(self,textvariable=self.labelCountry,
+                              anchor = "w",fg="white",bg="blue")
+        label.grid(column=0,row=16,columnspan=2,sticky='EW')
+        self.labelCountry.set(u"Country")
 
         self.labelHandle = tkinter.StringVar()
         label = tkinter.Label(self,textvariable=self.labelHandle,
                               anchor = "w",fg="white",bg="blue")
-        label.grid(column=0,row=16,columnspan=2,sticky='EW')
+        label.grid(column=0,row=18,columnspan=2,sticky='EW')
         self.labelHandle.set(u"Handle")
 
         self.labelHiddenInfo = tkinter.StringVar()
         label = tkinter.Label(self,textvariable=self.labelHiddenInfo,
                               anchor = "w",fg="white",bg="blue")
-        label.grid(column=0,row=18,columnspan=2,sticky='EW')
+        label.grid(column=0,row=20,columnspan=2,sticky='EW')
         self.labelHiddenInfo.set(u"Would you like to hide you personal info?")
 
         self.labelHiddenProfile = tkinter.StringVar()
         label = tkinter.Label(self,textvariable=self.labelHiddenProfile,
                               anchor = "w",fg="white",bg="blue")
-        label.grid(column=0,row=20,columnspan=2,sticky='EW')
+        label.grid(column=0,row=22,columnspan=2,sticky='EW')
         self.labelHiddenProfile.set(u"Would you like to hide your profile?")
 
         #BUTTON
@@ -137,7 +147,7 @@ class simpleapp_tk(tkinter.Tk):
 
         button = tkinter.Button(self,text=u"Create User",
                                 command=self.OnButtonClick)
-        button.grid(column=0,row=23,columnspan=2)
+        button.grid(column=0,row=24,columnspan=2)
         
         self.grid_columnconfigure(0,weight=1)
         self.resizable(True,False)
@@ -157,23 +167,67 @@ class simpleapp_tk(tkinter.Tk):
 
     def OnButtonClick(self):
         userCur = cnx.cursor()
-        passCur = cnx.cursor()
-
-        
-        userCur.callproc('CreateAccount', (self.first_name.get(), self.last_name.get(),
-                                       self.email.get(), self.password.get(),
-                                       self.phone.get(), self.dob.get(),
-                                       self.gender.get(), self.location.get(),
-                                       self.hidden_info.get(), self.hidden_profile.get(),
-                                       self.handle.get()))
+        locationCur = cnx.cursor()
 
 
-        userCur.execute("SELECT first_name, dob from user")
-        rows = userCur.fetchall()
-        for r in rows:
-            print(f" NAME = {r[0]} DOB = {r[1]}")
+            
+        user_city = self.city.get().upper()
+        user_country = self.country.get().upper()
+        info = self.hidden_info.get().upper()
+        hide_profile = self.hidden_profile.get().upper()
 
-        cnx.close()
+        if info == 'YES':
+            first_check = 1
+        if info == 'NO':
+            first_check = 0
+        if hide_profile == 'YES':
+            second_check = 1
+        if hide_profile == 'NO':
+            second_check = 0
+
+        if len(self.first_name.get())>50 or len(self.last_name.get())>50:
+            print("I'm sorry but one of the name fields is too long, please shorten it.")
+        elif len(self.email.get())>255:
+            print("Please shorten your email.")
+        elif len(self.password.get())>50:
+            print("Please shorten your password.")
+        elif len(self.phone.get())>50:
+            print("Please shorten your phone number.")
+        elif len(user_city)>50 or len(user_country)>50:
+            print("Your city or country is too long, please shorten it.")
+        elif len(self.gender.get())>1:
+            print("Please enter M,F or any other letter for your gender.")
+        elif (info != 'YES' and info != 'NO') or (hide_profile != 'YES' and hide_profile != 'NO'):
+            print("Please enter yes or no for the hidden info fields.")
+        elif len(self.handle.get())>50:
+            print("Please shorten your handle.")
+        else:
+            locationCur.execute("SELECT city_name, country_name from location")
+            rows = locationCur.fetchall()
+            city_exists = 0
+            country_exists = 0
+            for c in rows:
+                if user_city == f"{c[0]}" and user_country == f"{c[1]}":
+                    city_exists = 1
+                    country_exists = 1
+                
+            if city_exists == 0 or country_exists == 0:
+                print("Please enter Boston, London, Stockholm, Wellington or Chicago for the city \n \
+and United States, United Kingdon, Sweden or New Zealand for the country.")
+            else:
+                 userCur.callproc('CreateAccount', (self.first_name.get(), self.last_name.get(),
+                                           self.email.get(), self.password.get(),
+                                           self.phone.get(), self.dob.get(),
+                                           self.gender.get(), user_city, user_country,
+                                           first_check, second_check,
+                                           self.handle.get()))
+                 userCur.execute("SELECT first_name, dob from user")
+                 rows = userCur.fetchall()
+                 for r in rows:
+                     print(f" NAME = {r[0]} DOB = {r[1]}")
+
+        userCur.close()
+        locationCur.close()
 
 
 

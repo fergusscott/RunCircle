@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import menu_gui
 
+
 import tkinter
 import mysql.connector
 
@@ -9,8 +10,9 @@ class simpleapp_tk(tkinter.Tk):
         tkinter.Tk.__init__(self,parent)
         self.parent = parent
         self.initialize()
+        
 
-    def initialize(self):
+    def initialize(self,):
         self.grid()
 
         #FIELDS
@@ -38,13 +40,14 @@ class simpleapp_tk(tkinter.Tk):
         #BUTTON   
         button = tkinter.Button(self,text=u"Login",
                                 command=self.OnButtonClick)
-        button.grid(column=0,row=16,columnspan=2)
+        button.grid(column=0,row=4,columnspan=2)
         
 
         self.grid_columnconfigure(0,weight=1)
         self.resizable(True,False)
         self.update()
         self.geometry(self.geometry())
+
 
 
     def OnButtonClick(self):
@@ -69,6 +72,8 @@ where email = %s and password = %s")
         
         userCur.close()
 
+
+
 if __name__ == "__main__":
     cnx = mysql.connector.connect(
         user='project_user',
@@ -83,8 +88,3 @@ if __name__ == "__main__":
 
     
     cnx.close()
-
-
-
-
-

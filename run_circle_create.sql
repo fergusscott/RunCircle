@@ -312,7 +312,7 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`run` (
   `circle_id` INT NULL,
   `location_id` INT NOT NULL,
   `smart_integration` INT NULL,
-  `actual_date` DATETIME NULL,
+  `actual_date` DATE NULL,
   `scheduled_date` DATETIME NULL,
   UNIQUE INDEX `run_id_UNIQUE` (`run_id` ASC),
   INDEX `circle_id_idx` (`circle_id` ASC),

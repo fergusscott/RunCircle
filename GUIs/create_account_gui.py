@@ -168,8 +168,6 @@ class simpleapp_tk(tkinter.Tk):
     def OnButtonClick(self):
         userCur = cnx.cursor()
         locationCur = cnx.cursor()
-
-
             
         user_city = self.city.get().upper()
         user_country = self.country.get().upper()

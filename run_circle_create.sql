@@ -418,7 +418,8 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`run_has_profile` (
   `run_run_id` INT NOT NULL,
   `profile_profile_id` INT NOT NULL,
   CONSTRAINT FOREIGN KEY (run_run_id) REFERENCES run(run_id),
-  CONSTRAINT FOREIGN KEY (profile_profile_id) REFERENCES profile(profile_id))
+  CONSTRAINT FOREIGN KEY (profile_profile_id) REFERENCES profile(profile_id),
+  CONSTRAINT user_only_has_a_run_once UNIQUE(run_run_id, profile_profile_id))
 ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;

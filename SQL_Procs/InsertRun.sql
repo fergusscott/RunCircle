@@ -111,3 +111,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
+call InsertRun(1,1,'00:40:10',8,'00:08:02',Null,1,1,Null,'2019-01-01');
+
+select * from profile;

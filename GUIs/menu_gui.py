@@ -23,6 +23,14 @@ class simpleapp_tk(tkinter.Tk):
         button = tkinter.Button(self,text=u"Create Circle",
                                 command=self.OnButtonClick2)
         button.grid(column=0,row=1,columnspan=2)
+
+        button = tkinter.Button(self,text=u"Show Profile",
+                                command=self.OnButtonClick2)
+        button.grid(column=0,row=2,columnspan=2)
+
+        button = tkinter.Button(self,text=u"Suggested Circles",
+                                command=self.OnButtonClick2)
+        button.grid(column=0,row=3,columnspan=2)
         
         
 
@@ -40,7 +48,7 @@ class simpleapp_tk(tkinter.Tk):
         )
         passCur = cnx.cursor()
 
-        create_run_gui.simpleapp_tk(self.parent)
+        create_run_gui.main()
 
         passCur.close()
 
@@ -54,7 +62,6 @@ class simpleapp_tk(tkinter.Tk):
         create_run_gui.simpleapp_tk(self.parent)
 
         passCur.close()
-
 
 
 if __name__ == "__main__":

@@ -46,7 +46,6 @@ class simpleapp_tk(tkinter.Tk):
         self.update()
         self.geometry(self.geometry())
 
-
     def OnButtonClick(self):
         userCur = cnx.cursor()
         passCur = cnx.cursor()

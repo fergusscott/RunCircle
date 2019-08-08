@@ -115,37 +115,40 @@ class simpleapp_tk(tkinter.Tk):
                 city_exists = 1
 
         if self.circle.get() == '':
-            circle = -1
+            circle = None
         else:
             circle = self.circle.get()
 
+        print(user_city)
+        print(self.handle.get())
+        print(self.duration.get())
+        print(self.distance.get())
+        print(self.elevation.get())
+        print(self.date.get())
+        print(self.pace.get())
+
         userCur.callproc('InsertRun', (self.handle.get(), self.duration.get(),
                         self.distance.get(), self.pace.get(),
-                        circle, self.elevation.get(),user_city,
-                        1, self.date.get()))
+                        None, self.elevation.get(),user_city,
+                        None,self.date.get()))
 
         userCur.execute("SELECT handle, pace_per_mile from profile")
+        '''
         rows = userCur.fetchall()
         for r in rows:
             print(f" ID = {r[0]} NAME = {r[1]}")
+        '''
 
         userCur.close
 
-if __name__ == "__main__":
-    cnx = mysql.connector.connect(
-        user='project_user',
-        database='run_circle'
-        )
-    print("connected")
 
-    
+
+if __name__ == "__main__":
+
     app = simpleapp_tk(None)
     app.title('my application')
     app.mainloop()
-
     
-    cnx.close()
-
 
 
 

@@ -45,5 +45,3 @@ BEGIN
         ;
 END //
 DELIMITER ;
-
-CALL findRunFriend(5)

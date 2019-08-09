@@ -61,7 +61,6 @@ def InsertRun(list_of_arg):
     try:
         cursor.callproc("InsertRun", arg_tup)
         connection.commit()
-        cursor.close()
     except mysql.connector.Error as err:
         print("Something went crazy: {}".format(err))
 

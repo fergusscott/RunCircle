@@ -24,14 +24,6 @@ def findRunFriend(profile_id):
         user based on our top secret patented algorithm.
     '''
 
-    # Need to select:
-    #   1. avg_distance_miles
-    #   2. pace_per_mile
-    #   3. avg_duration
-    #   4. runs
-    #   5. preferred_location
-    #   6. handle
-    # It all goes in here!
 
     DBconfig = {
     'user': USER,

@@ -136,7 +136,7 @@ BEGIN
 			END IF;
 END //
 
-CREATE PROCEDURE ClaimRun(
+CREATE PROCEDURE claimRun(
 	in profile_id INT,
     in run_id INT
 ) 

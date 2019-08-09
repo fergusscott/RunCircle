@@ -17,6 +17,8 @@ BEGIN
     SELECT avg_duration INTO profile_avg_duration FROM profile WHERE profile_id = profile_id_param;
 	SELECT preferred_location INTO profile_preferred_location FROM profile WHERE profile_id = profile_id_param;
     
+    # The check for a good circle is a lot less strict. Theoretically, there'll
+    # be way less circles than runners, so we want to make sure people get a match!
     SELECT 
         avg_duration, 
         location_id,

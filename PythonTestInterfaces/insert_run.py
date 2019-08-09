@@ -12,7 +12,6 @@ PASSWORD = 'runcircle123'
 HOST = 'localhost'
 DATABASE = 'run_circle'
 
-
 def InsertRun(list_of_arg):
     '''
     Parameters: A list of arguments. Order of arguments should be:

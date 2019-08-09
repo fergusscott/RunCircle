@@ -20,6 +20,8 @@ def findRunFriend(profile_id):
         the database. If this was connected to a GUI,
         the first index would be the best match, and could
         be displayed from 0 to n.
+        If there is no match, the function returns an empty list.
+        Handle this in the front-end to display that there is no match.
     Does: Selects a table with the best matches for the particular
         user based on our top secret patented algorithm.
     '''
@@ -57,9 +59,6 @@ def findRunFriend(profile_id):
         
         # At this point, result list is a list of tuples, where
         # each tuple is a row from the result set. 
-        # However, if there is NO match, we'll return a special message.
-        if not result_lst:
-            result_lst.append("No one matches your speed yet! Try registering runs first.")
         return result_lst
     except:
         print("There was no result to show!")

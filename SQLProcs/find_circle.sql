@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS findRunCircle;
 
 # A function very similar to run_friend (read that first)
 # We determine a suitable circle in your area. 
-# It'll be based on average run duration and speed.
+# It'll be based on average run duration.
 
 DELIMITER // 
 CREATE PROCEDURE findRunCircle(

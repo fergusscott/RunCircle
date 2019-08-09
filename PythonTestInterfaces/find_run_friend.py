@@ -4,12 +4,12 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-USER = 'root' # You probably don't have to change this.
-PASSWORD = 'runcircle123' # Put your password here.
-HOST = 'localhost' # Try with Localhost, if it doesn't work, open the database in
-# Workbench. Click "Database" and then "Manage Connection" and you'll see a hostname.
-# That is what goes in the host variable.
-DATABASE = 'run_circle' # Obviously change this to whatever you want, as long as it matches.
+# Globals to use in the function. Probably should not be stored here,
+# but for the purpose of the project, they can be here.
+USER = 'root'
+PASSWORD = 'runcircle123' 
+HOST = 'localhost'
+DATABASE = 'run_circle'
 
 def findRunFriend(profile_id):
     '''
@@ -26,7 +26,7 @@ def findRunFriend(profile_id):
         user based on our top secret patented algorithm.
     '''
 
-
+    # Set up dictionairy of connection data.
     DBconfig = {
     'user': USER,
     'password': PASSWORD,
@@ -59,6 +59,9 @@ def findRunFriend(profile_id):
         
         # At this point, result list is a list of tuples, where
         # each tuple is a row from the result set. 
+        # Close the connection and return the lst.
+        cursor.close()
+        connection.close()    
         return result_lst
     except:
         print("There was no result to show!")

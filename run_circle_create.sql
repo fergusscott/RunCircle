@@ -102,11 +102,11 @@ CREATE TABLE IF NOT EXISTS `run_circle`.`location` (
 ENGINE = InnoDB;
 
 insert into location (city_name, country_name, latitude, longitude) values
-("London", "Great Britain", "51.5074 N", "0.1278 W"),
-("Boston", "United States", "42.3601 N", "71.0589 W"), 
-("Chicago", "United States", "41.8781 N", "87.6298 W"), 
-("Stockholm", "Sweden", "59.3293 N", "18.0686 E"), 
-("Wellington", "New Zealand", "41.2865 N","174.7762 E"); 
+("LONDON", "GREAT BRITAIN", "51.5074 N", "0.1278 W"),
+("BOSTON", "UNITED STATES", "42.3601 N", "71.0589 W"), 
+("CHICAGO", "UNITED STATES", "41.8781 N", "87.6298 W"), 
+("STOCKHOLM", "SWEDEN", "59.3293 N", "18.0686 E"), 
+("WELLINGTON", "NEW ZEALAND", "41.2865 N","174.7762 E"); 
 
 -- -----------------------------------------------------
 -- Table `run_circle`.`profile`
@@ -269,14 +269,13 @@ insert into account (email, password, profile_id, user_id) values
 -- Table `run_circle`.`circle`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `run_circle`.`circle` (
-  `circle_id` INT NOT NULL,
+  `circle_id` INT PRIMARY KEY AUTO_INCREMENT,
   `profile_id` INT NOT NULL,
   `avg_duration` TIME NOT NULL,
   `avg_speed` FLOAT NOT NULL,
   `name` VARCHAR(50) NOT NULL,
   `location_id` INT NOT NULL,
   `num_members` INT NOT NULL,
-  PRIMARY KEY (`circle_id`),
   UNIQUE INDEX `circle_id_UNIQUE` (`circle_id` ASC),
   INDEX `profile_id_idx` (`profile_id` ASC),
   INDEX `location_id_idx` (`location_id` ASC),

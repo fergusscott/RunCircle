@@ -3,9 +3,12 @@ USE run_circle;
 DROP PROCEDURE IF EXISTS ClaimRun;
 DROP PROCEDURE IF EXISTS InsertRun;
 DROP TRIGGER IF EXISTS update_profile_stats;
+DROP TRIGGER IF EXISTS update_circle_stats;
 
 DELIMITER //
 
+# A trigger to update any profile connected to a run
+# with its new statistics!
 CREATE TRIGGER update_profile_stats
 	AFTER INSERT ON run_has_profile
     FOR EACH ROW
@@ -83,6 +86,61 @@ CREATE TRIGGER update_profile_stats
 			END IF;
     END //
 
+
+# A trigger to update any circle with new stats, if a circle was
+# entered in a run.
+CREATE TRIGGER update_circle_stats
+	AFTER INSERT ON run
+	FOR EACH ROW
+    BEGIN
+		# Declare some variables.
+		DECLARE last_run_id INT;
+        DECLARE curr_circle_id INT;
+        
+        # These variables are needed if we need to update things.
+        # First, durations stuff.
+        DECLARE num_runs_circle INT;
+        DECLARE dur_sec INT;
+        DECLARE new_dur_sec INT;
+        DECLARE new_avg_duration TIME;
+        
+        # Now, the speed.
+        DECLARE total_ppm FLOAT;
+        DECLARE new_ppm FLOAT;
+        
+        # This will be the run to check out.
+        SELECT LAST_INSERT_ID() into last_run_id from run; 
+
+		# If the circle_id is null, we can ignore the updates. But if not...
+        IF circle_id IN (
+			SELECT circle_id from run where run_id = last_run_id) 
+				IS NOT NULL THEN
+			
+            # Get the circle's id, and how many times it has been associated with runs before.
+            # This should be the NEW value of runs.
+            SELECT circle_id into curr_circle_id from run where run_id = last_run_id;
+            SELECT count(*) into num_runs_circle from run where circle_id = curr_circle_id;
+        
+			# We'll update the average duration and speed. We'll define speed as 
+            # average ppm for the runs.
+            SELECT time_to_sec(avg_duration) into dur_sec from circle where circle_id = curr_circle_id;
+            SELECT (dur_sec * (nums_runs_circle - 1)) + (time_to_sec(duration)) into new_dur_sec
+				from run where run_id = last_run_id;
+            SELECT sec_to_time((new_dur_sec / nums_runs_circle)) into new_avg_duration;
+            
+            # Time done! Let's get the ppm. This is not the PPM, but rather, the avg 
+            # ppm in each run the circle has completed.
+            SELECT SUM(pace_per_mile) into total_ppm from run WHERE circle_id = curr_circle_id;
+            SELECT ((total_ppm + pace_per_mile) / nums_runs_circle) 
+				into new_ppm from run where run_id = last_run_id;
+			
+            UPDATE circle SET avg_duration = new_avg_duration WHERE circle_id = curr_circle_id;
+            UPDATE circle SET speed = new_ppm WHERE circle_id = curr_circle_id;
+            
+		END IF;
+            
+    END //
+    
 CREATE PROCEDURE InsertRun
 (
 	in user_id_param INT,
@@ -123,11 +181,6 @@ BEGIN
             
 			# Insert it into the run has user table.
 			INSERT INTO run_has_profile VALUE (last_run_id, profile_id_param);
-            
-            # This procedure used to update profiles - but now there is a trigger for that instead!
-            # Using a trigger ensures that the profile will update both for users adding a run,
-            # and for users "claiming" a run (if 2 users ran together, one user adds the run and the second
-            # can claim it as them being part of it - and so they get the same statistics).
             
 			IF(_error = 1) THEN
 				ROLLBACK;
